@@ -1,257 +1,24 @@
 
-# Instructions
-## Please read carefully
-
-### Starting Your Notebook
-
-This is a template notebook to get you started with the data visualization impact project. __Please do not edit this notebook directly.__ Take the following steps to begin:
-
-
-1.   Save a copy of this notebook - File > Save a copy in Drive
-2.   Rename the copy - remove "Copy of" from the name, and replace "template" with your name (e.g., us_legislators_sam.ipynb)
-3.   Move the notebook to our project folder in the Girls Who Code Josephinum shared Drive ([data_viz_impact_project/notebooks](https://drive.google.com/drive/u/0/folders/1Y1MhbAtWkHbN_GHCvroDRNb4-AWs4stR)). Within this notebook, you can go to File > Locate in Drive if you're not sure where the notebook is located, or navigate to the Colab Notebooks folder in your Google Drive.
-
-# US Legislators Data
-__Source:__ https://github.com/unitedstates/congress-legislators
-<br>
-<br>
-
-This data comes from [@unitedstates project](https://theunitedstates.io/), which is a shared commons of data and tools for the United States. Made by the public, used by the public. We will work with the legislators-current dataset that has currently serving members of Congress and information about the state they represent, their political party, gender, birthdate, whether they are in the Senate or House of Representatives, and other information.
-
-There are additional datasets containing members of the United States Congress (1789-Present), congressional committees (1973-Present), committee membership (current only), and presidents and vice presidents of the United States. Not all of the datasets are in .csv files, so if you want to work with others, you will have to figure out how to use YAML or JSON (not too difficult with some searching!).
-
-__Be careful__ because there is some missing information that shows up as `NaN` in the data, and there is some messy text and dates you may need to parse.
-
-## Boilerplate code
-
-
-1.   Import Python libraries and update Seaborn if needed
-2.   Read in datasets
-3.   Quickly examine a few rows of data
-
-
-
-
-```
-import seaborn as sns
-# Check seaborn version - Make sure you restart runtime if seaborn updates!
-sns_version = (sns .__version__)
-if sns_version == "0.9.0":
-  print("You are good to go!")
-else:
-  !pip install seaborn --upgrade
-  print("\n \n Seaborn was updated. Please restart the notebook by going to Runtime > Restart runtime before running any further code.")
-```
-
-    You are good to go!
-
-
 
 ```
 import pandas as pd
 import numpy as np
 import seaborn as sns
+from matplotlib import pyplot
 ```
 
-We can read the data directly from the @unitedstates project website [here](https://theunitedstates.io/congress-legislators/legislators-current.csv). But see the [github project page](https://github.com/unitedstates/congress-legislators) for additional data details.
-
-
-```
-legislators = pd.read_csv("https://theunitedstates.io/congress-legislators/legislators-current.csv")
-```
+We can read the data directly from github. See additional details about the dataset [here](https://github.com/fivethirtyeight/data/tree/master/college-majors).
 
 
 ```
-legislators.head(5)
-```
+majors = pd.read_csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/college-majors/recent-grads.csv")
+women_stem = pd.read_csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/college-majors/women-stem.csv")
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>last_name</th>
-      <th>first_name</th>
-      <th>middle_name</th>
-      <th>suffix</th>
-      <th>nickname</th>
-      <th>full_name</th>
-      <th>birthday</th>
-      <th>gender</th>
-      <th>type</th>
-      <th>state</th>
-      <th>...</th>
-      <th>opensecrets_id</th>
-      <th>lis_id</th>
-      <th>fec_ids</th>
-      <th>cspan_id</th>
-      <th>govtrack_id</th>
-      <th>votesmart_id</th>
-      <th>ballotpedia_id</th>
-      <th>washington_post_id</th>
-      <th>icpsr_id</th>
-      <th>wikipedia_id</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Brown</td>
-      <td>Sherrod</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>Sherrod Brown</td>
-      <td>1952-11-09</td>
-      <td>M</td>
-      <td>sen</td>
-      <td>OH</td>
-      <td>...</td>
-      <td>N00003535</td>
-      <td>S307</td>
-      <td>H2OH13033,S6OH00163</td>
-      <td>5051.0</td>
-      <td>400050</td>
-      <td>27018.0</td>
-      <td>Sherrod Brown</td>
-      <td>NaN</td>
-      <td>29389.0</td>
-      <td>Sherrod Brown</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Cantwell</td>
-      <td>Maria</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>Maria Cantwell</td>
-      <td>1958-10-13</td>
-      <td>F</td>
-      <td>sen</td>
-      <td>WA</td>
-      <td>...</td>
-      <td>N00007836</td>
-      <td>S275</td>
-      <td>S8WA00194,H2WA01054</td>
-      <td>26137.0</td>
-      <td>300018</td>
-      <td>27122.0</td>
-      <td>Maria Cantwell</td>
-      <td>NaN</td>
-      <td>39310.0</td>
-      <td>Maria Cantwell</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Cardin</td>
-      <td>Benjamin</td>
-      <td>L.</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>Benjamin L. Cardin</td>
-      <td>1943-10-05</td>
-      <td>M</td>
-      <td>sen</td>
-      <td>MD</td>
-      <td>...</td>
-      <td>N00001955</td>
-      <td>S308</td>
-      <td>H6MD03177,S6MD03177</td>
-      <td>4004.0</td>
-      <td>400064</td>
-      <td>26888.0</td>
-      <td>Ben Cardin</td>
-      <td>NaN</td>
-      <td>15408.0</td>
-      <td>Ben Cardin</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Carper</td>
-      <td>Thomas</td>
-      <td>Richard</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>Thomas R. Carper</td>
-      <td>1947-01-23</td>
-      <td>M</td>
-      <td>sen</td>
-      <td>DE</td>
-      <td>...</td>
-      <td>N00012508</td>
-      <td>S277</td>
-      <td>S8DE00079</td>
-      <td>663.0</td>
-      <td>300019</td>
-      <td>22421.0</td>
-      <td>Tom Carper</td>
-      <td>NaN</td>
-      <td>15015.0</td>
-      <td>Tom Carper</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Casey</td>
-      <td>Robert</td>
-      <td>P.</td>
-      <td>Jr.</td>
-      <td>Bob</td>
-      <td>Robert P. Casey, Jr.</td>
-      <td>1960-04-13</td>
-      <td>M</td>
-      <td>sen</td>
-      <td>PA</td>
-      <td>...</td>
-      <td>N00027503</td>
-      <td>S309</td>
-      <td>S6PA00217</td>
-      <td>47036.0</td>
-      <td>412246</td>
-      <td>2541.0</td>
-      <td>Bob Casey, Jr.</td>
-      <td>NaN</td>
-      <td>40703.0</td>
-      <td>Bob Casey Jr.</td>
-    </tr>
-  </tbody>
-</table>
-<p>5 rows × 34 columns</p>
-</div>
-
-
-
-
-```
-# calculate age
-legislators["age"] = 2019 - pd.to_datetime(legislators["birthday"]).dt.year
 ```
 
 
 ```
-# calulate data by state
-state_counts = legislators.groupby(["state", "type", "gender"]).count()[["full_name"]].rename(index=str, columns={"full_name": "count"})
-#state_female_counts = legislators[legislators["gender"]=="M"].groupby(["state", "type"]).count()[["full_name"]].rename(index=str, columns={"full_name": "female_count"})
-#state_female_counts
-state_average = legislators.groupby(["state", "type", "gender"]).mean()[["age"]].rename(index=str, columns={"age": "average_age"})
-state_df_gender_col = pd.merge(state_counts, state_average, on = ["state", "type", "gender"]).reset_index()
-state_df_gender_col.head()
+majors.head(5)
 ```
 
 
@@ -275,53 +42,149 @@ state_df_gender_col.head()
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>state</th>
-      <th>type</th>
-      <th>gender</th>
-      <th>count</th>
-      <th>average_age</th>
+      <th>Rank</th>
+      <th>Major_code</th>
+      <th>Major</th>
+      <th>Total</th>
+      <th>Men</th>
+      <th>Women</th>
+      <th>Major_category</th>
+      <th>ShareWomen</th>
+      <th>Sample_size</th>
+      <th>Employed</th>
+      <th>Full_time</th>
+      <th>Part_time</th>
+      <th>Full_time_year_round</th>
+      <th>Unemployed</th>
+      <th>Unemployment_rate</th>
+      <th>Median</th>
+      <th>P25th</th>
+      <th>P75th</th>
+      <th>College_jobs</th>
+      <th>Non_college_jobs</th>
+      <th>Low_wage_jobs</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>AK</td>
-      <td>rep</td>
-      <td>M</td>
       <td>1</td>
-      <td>86.0</td>
+      <td>2419</td>
+      <td>PETROLEUM ENGINEERING</td>
+      <td>2339.0</td>
+      <td>2057.0</td>
+      <td>282.0</td>
+      <td>Engineering</td>
+      <td>0.120564</td>
+      <td>36</td>
+      <td>1976</td>
+      <td>1849</td>
+      <td>270</td>
+      <td>1207</td>
+      <td>37</td>
+      <td>0.018381</td>
+      <td>110000</td>
+      <td>95000</td>
+      <td>125000</td>
+      <td>1534</td>
+      <td>364</td>
+      <td>193</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>AK</td>
-      <td>sen</td>
-      <td>F</td>
-      <td>1</td>
-      <td>62.0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>AK</td>
-      <td>sen</td>
-      <td>M</td>
-      <td>1</td>
-      <td>55.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>AL</td>
-      <td>rep</td>
-      <td>F</td>
       <td>2</td>
-      <td>48.5</td>
+      <td>2416</td>
+      <td>MINING AND MINERAL ENGINEERING</td>
+      <td>756.0</td>
+      <td>679.0</td>
+      <td>77.0</td>
+      <td>Engineering</td>
+      <td>0.101852</td>
+      <td>7</td>
+      <td>640</td>
+      <td>556</td>
+      <td>170</td>
+      <td>388</td>
+      <td>85</td>
+      <td>0.117241</td>
+      <td>75000</td>
+      <td>55000</td>
+      <td>90000</td>
+      <td>350</td>
+      <td>257</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>2415</td>
+      <td>METALLURGICAL ENGINEERING</td>
+      <td>856.0</td>
+      <td>725.0</td>
+      <td>131.0</td>
+      <td>Engineering</td>
+      <td>0.153037</td>
+      <td>3</td>
+      <td>648</td>
+      <td>558</td>
+      <td>133</td>
+      <td>340</td>
+      <td>16</td>
+      <td>0.024096</td>
+      <td>73000</td>
+      <td>50000</td>
+      <td>105000</td>
+      <td>456</td>
+      <td>176</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>2417</td>
+      <td>NAVAL ARCHITECTURE AND MARINE ENGINEERING</td>
+      <td>1258.0</td>
+      <td>1123.0</td>
+      <td>135.0</td>
+      <td>Engineering</td>
+      <td>0.107313</td>
+      <td>16</td>
+      <td>758</td>
+      <td>1069</td>
+      <td>150</td>
+      <td>692</td>
+      <td>40</td>
+      <td>0.050125</td>
+      <td>70000</td>
+      <td>43000</td>
+      <td>80000</td>
+      <td>529</td>
+      <td>102</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>AL</td>
-      <td>rep</td>
-      <td>M</td>
       <td>5</td>
-      <td>61.8</td>
+      <td>2405</td>
+      <td>CHEMICAL ENGINEERING</td>
+      <td>32260.0</td>
+      <td>21239.0</td>
+      <td>11021.0</td>
+      <td>Engineering</td>
+      <td>0.341631</td>
+      <td>289</td>
+      <td>25694</td>
+      <td>23170</td>
+      <td>5180</td>
+      <td>16697</td>
+      <td>1672</td>
+      <td>0.061098</td>
+      <td>65000</td>
+      <td>50000</td>
+      <td>75000</td>
+      <td>18314</td>
+      <td>4440</td>
+      <td>972</td>
     </tr>
   </tbody>
 </table>
@@ -331,11 +194,7 @@ state_df_gender_col.head()
 
 
 ```
-# Pivot
-state_df_wide_count = state_df_gender_col.pivot_table(index = ["state", "type"], columns = "gender", values = "count").rename(index=str, columns={"F": "F_count", "M": "M_count"})
-state_df_wide_average = state_df_gender_col.pivot_table(index = ["state", "type"], columns = "gender", values = "average_age").rename(index=str, columns={"F": "F_average_age", "M": "M_average_age"})
-state_df_no_gender_col = pd.merge(state_df_wide_count, state_df_wide_average, on = ["state", "type"]).reset_index()
-state_df_no_gender_col.head()
+women_stem.head(5)
 ```
 
 
@@ -358,60 +217,78 @@ state_df_no_gender_col.head()
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th>gender</th>
-      <th>state</th>
-      <th>type</th>
-      <th>F_count</th>
-      <th>M_count</th>
-      <th>F_average_age</th>
-      <th>M_average_age</th>
+      <th></th>
+      <th>Rank</th>
+      <th>Major_code</th>
+      <th>Major</th>
+      <th>Major_category</th>
+      <th>Total</th>
+      <th>Men</th>
+      <th>Women</th>
+      <th>ShareWomen</th>
+      <th>Median</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>AK</td>
-      <td>rep</td>
-      <td>NaN</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>86.0</td>
+      <td>1</td>
+      <td>2419</td>
+      <td>PETROLEUM ENGINEERING</td>
+      <td>Engineering</td>
+      <td>2339</td>
+      <td>2057</td>
+      <td>282</td>
+      <td>0.120564</td>
+      <td>110000</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>AK</td>
-      <td>sen</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>62.0</td>
-      <td>55.0</td>
+      <td>2</td>
+      <td>2416</td>
+      <td>MINING AND MINERAL ENGINEERING</td>
+      <td>Engineering</td>
+      <td>756</td>
+      <td>679</td>
+      <td>77</td>
+      <td>0.101852</td>
+      <td>75000</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>AL</td>
-      <td>rep</td>
-      <td>2.0</td>
-      <td>5.0</td>
-      <td>48.5</td>
-      <td>61.8</td>
+      <td>3</td>
+      <td>2415</td>
+      <td>METALLURGICAL ENGINEERING</td>
+      <td>Engineering</td>
+      <td>856</td>
+      <td>725</td>
+      <td>131</td>
+      <td>0.153037</td>
+      <td>73000</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>AL</td>
-      <td>sen</td>
-      <td>NaN</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>75.0</td>
+      <td>4</td>
+      <td>2417</td>
+      <td>NAVAL ARCHITECTURE AND MARINE ENGINEERING</td>
+      <td>Engineering</td>
+      <td>1258</td>
+      <td>1123</td>
+      <td>135</td>
+      <td>0.107313</td>
+      <td>70000</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>AR</td>
-      <td>rep</td>
-      <td>NaN</td>
-      <td>4.0</td>
-      <td>NaN</td>
-      <td>57.5</td>
+      <td>5</td>
+      <td>2418</td>
+      <td>NUCLEAR ENGINEERING</td>
+      <td>Engineering</td>
+      <td>2573</td>
+      <td>2200</td>
+      <td>373</td>
+      <td>0.144967</td>
+      <td>65000</td>
     </tr>
   </tbody>
 </table>
@@ -419,37 +296,70 @@ state_df_no_gender_col.head()
 
 
 
-## Your code
-### Start asking questions and exploring the data! Here are some ideas:
+# Your code
+
+###This graph shows the average number of women who work in all the different major categories. The major categories that are represented have a specific color that represents them, so if there is a point with the same color, then it belongs in that major category. For instance, Engineering is pink, so all the dots represent the different women in engineering jobs. 
 
 
-*   Check the number of rows, or observations, in the data
-*   Examine the columns in the data and the unique values of each (for categorical variables)
-*   Check the data for missing values, misspellings, duplicates, or any other problems
-*   Compute descriptive statistics (for continous variables)
-*   Create any new variables you think would be useful - e.g., grouping/categorizing in new ways, calculating additional information
-*   Start examining variables in conjunction with one another - e.g., does a result differ by gender, year, gender _and_ year?
-*   Use visualizations to answer your questions!
+```
+fig, ax = pyplot.subplots(figsize=(10,10))
+sns.swarmplot(x="ShareWomen", y="Major_category", 
+            hue="Major_category", 
+            data=majors,
+            size=10,
+           ax=ax);
+```
 
-__Make sure you use text cells to break up, organize, and add comments and thoughts to your code.__ If you find something interesting, call it out. If you have thoughts for what to do next time, write them down. Start telling your story with data. Notebooks are great for this. 
+
+![png](After_college_majors_Nicole_files/After_college_majors_Nicole_7_0.png)
+
+
+###This is a scatter plot that shows the percentage of women that were employed in the different major categories. The size of the points depend on the number of women that are part of the industry. Moreover, the colors are representationl for the major they focus on. 
+
+
+```
+sns.set(rc={'figure.figsize':(10,10)})
+sns.set_style("whitegrid")
+sns.scatterplot(x="ShareWomen", y="Employed",
+                      hue="Major_category", size="Women",
+                      palette="viridis",
+                      sizes=(90, 400),
+                      data=majors)
+
+
+```
+
+
+
+
+    <matplotlib.axes._subplots.AxesSubplot at 0x7fb1dc0ab128>
+
+
+
+
+![png](After_college_majors_Nicole_files/After_college_majors_Nicole_9_1.png)
+
+
+###This is a joint plot that shows the percentage of women and their average salary in the different major categories. The shade of the hexagon gets darker as more data points are included. For instance, the darkest hexagons explain the number of women that range between the salary of 20-40 thousand dollars. The exterior histogram shows the same represntation, but specifies in more sections than others. This means that you can find the exact number of salaries on the average percentage of women.  
 
 
 
 ```
-# Get only reps
-reps = state_df_gender_col[state_df_gender_col["type"] == "rep"]
-
-sns.set(rc={'figure.figsize':(11,11)})
-sns.scatterplot(x = "average_age", y = "state", hue = "gender", data= reps)
+# sns.set(rc={'axis.axissize':(15,15)})
+sns.jointplot("ShareWomen", 
+              "Median", 
+              data=majors, 
+              kind="hex",
+              color="r")
 ```
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7f5eefa42e80>
+    <seaborn.axisgrid.JointGrid at 0x7fb1e0319828>
 
 
 
 
-![png](us_legislators_template_with_states_BRYAN_files/us_legislators_template_with_states_BRYAN_12_1.png)
+![png](After_college_majors_Nicole_files/After_college_majors_Nicole_11_1.png)
 
