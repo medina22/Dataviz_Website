@@ -296,7 +296,7 @@ women_stem.head(5)
 
 
 
-# Your code
+# Plots focusing on College Majors :)
 
 ### This graph shows the average number of women who work in all the different major categories. The major categories that are represented have a specific color that represents them, so if there is a point with the same color, then it belongs in that major category. For instance, Engineering is pink, so all the dots represent the different women in engineering jobs. 
 
