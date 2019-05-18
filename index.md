@@ -298,7 +298,7 @@ women_stem.head(5)
 
 # Your code
 
-###This graph shows the average number of women who work in all the different major categories. The major categories that are represented have a specific color that represents them, so if there is a point with the same color, then it belongs in that major category. For instance, Engineering is pink, so all the dots represent the different women in engineering jobs. 
+### This graph shows the average number of women who work in all the different major categories. The major categories that are represented have a specific color that represents them, so if there is a point with the same color, then it belongs in that major category. For instance, Engineering is pink, so all the dots represent the different women in engineering jobs. 
 
 
 ```
@@ -314,7 +314,7 @@ sns.swarmplot(x="ShareWomen", y="Major_category",
 ![png](After_college_majors_Nicole_files/After_college_majors_Nicole_7_0.png)
 
 
-###This is a scatter plot that shows the percentage of women that were employed in the different major categories. The size of the points depend on the number of women that are part of the industry. Moreover, the colors are representationl for the major they focus on. 
+### This is a scatter plot that shows the percentage of women that were employed in the different major categories. The size of the points depend on the number of women that are part of the industry. Moreover, the colors are representationl for the major they focus on. 
 
 
 ```
@@ -340,7 +340,7 @@ sns.scatterplot(x="ShareWomen", y="Employed",
 ![png](After_college_majors_Nicole_files/After_college_majors_Nicole_9_1.png)
 
 
-### This is a joint plot that shows the percentage of women and their average salary in the different major categories. The shade of the hexagon gets darker as more data points are included. For instance, the darkest hexagons explain the number of women that range between the salary of 20-40 thousand dollars. The exterior histogram shows the same represntation, but specifies in more sections than others. This means that you can find the exact number of salaries on the average percentage of women.  
+### This is a joint plot that shows the percentage of women and their average salary in the different major categories. The shade of the hexagon gets darker as more data points are included. For instance, the darkest hexagons explain the number of women that range between the salary of 20-40 thousand dollars. The exterior histogram shows the same representation, but specifies in more sections than others. This means that you can find the exact number of salaries on the average percentage of women.  
 
 
 
