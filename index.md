@@ -307,21 +307,6 @@ women_stem.head(5)
 ### This is a scatter plot that shows the percentage of women that were employed in the different major categories. The size of the points depend on the number of women that are part of the industry. Moreover, the colors are representationl for the major they focus on. 
 
 
-```
-sns.set(rc={'figure.figsize':(10,10)})
-sns.set_style("whitegrid")
-sns.scatterplot(x="ShareWomen", y="Employed",
-                      hue="Major_category", size="Women",
-                      palette="viridis",
-                      sizes=(90, 400),
-                      data=majors)
-
-
-```
-
-
-
-
     <matplotlib.axes._subplots.AxesSubplot at 0x7fb1dc0ab128>
 
 
@@ -333,15 +318,6 @@ sns.scatterplot(x="ShareWomen", y="Employed",
 ### This is a joint plot that shows the percentage of women and their average salary in the different major categories. The shade of the hexagon gets darker as more data points are included. For instance, the darkest hexagons explain the number of women that range between the salary of 20-40 thousand dollars. The exterior histogram shows the same representation, but specifies in more sections than others. This means that you can find the exact number of salaries on the average percentage of women.  
 
 
-
-```
-# sns.set(rc={'axis.axissize':(15,15)})
-sns.jointplot("ShareWomen", 
-              "Median", 
-              data=majors, 
-              kind="hex",
-              color="r")
-```
 
 
 
