@@ -301,16 +301,6 @@ women_stem.head(5)
 ### This graph shows the average number of women who work in all the different major categories. The major categories that are represented have a specific color that represents them, so if there is a point with the same color, then it belongs in that major category. For instance, Engineering is pink, so all the dots represent the different women in engineering jobs. 
 
 
-```
-fig, ax = pyplot.subplots(figsize=(10,10))
-sns.swarmplot(x="ShareWomen", y="Major_category", 
-            hue="Major_category", 
-            data=majors,
-            size=10,
-           ax=ax);
-```
-
-
 ![png](After_college_majors_Nicole_files/After_college_majors_Nicole_7_0.png)
 
 
